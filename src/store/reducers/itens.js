@@ -25,6 +25,7 @@ import caixaSom from 'assets/itens/caixa-som.png';
 import caixaSomBluetooth from 'assets/itens/caixa-som-bluetooth.png';
 import miniSystem from 'assets/itens/mini-system.png';
 import tablet from 'assets/itens/tablet.png';
+import soundbar from 'assets/itens/soundbar.png';
 
 const initialState = [{
   titulo: 'Assistente virtual',
@@ -226,7 +227,17 @@ const initialState = [{
   preco: 782.91,
   id: uuid(),
   categoria: 'som'
-}];
+},
+{
+  titulo: 'Soundbar 2.1 Canais com Subwoofer sem fio',
+  descricao: 'Transforme sua sala em um cinema em casa!',
+  foto: soundbar,
+  favorito: false,
+  preco: 1089.90,
+  id: uuid(),
+  categoria: 'som'
+}
+];
 
 const itensSlice = createSlice({
   name: 'itens',
