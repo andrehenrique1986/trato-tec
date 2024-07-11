@@ -3,10 +3,9 @@
     flex: 1;
     flex-direction: column;
     justify-content: center;
-}
-
-
-.formulario {
+  }
+  
+  .formulario {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -15,15 +14,23 @@
     flex: 1;
     width: 70%;
     input, select {
-       border: none;
-       border-radius: 5px;
-       font-size: 20px;
-       outline: #1A95F0; 
-       transition: .2s ease-in-out;
-       padding: 10px 20px;
-       &:focus{
-        outline: 2px solid #1A95F0;
-       }
+      border: none;
+      border-radius: 5px;
+      font-size: 20px;
+      outline: #1a95f0;
+      transition: .2s ease-in-out;
+      padding: 10px 20px;
+      &:focus {
+        outline: 2px solid #1a95f0;
+      }
+      &:invalid {
+        outline: 2px solid red;
+      }
     }
-}
-
+    .input-erro {
+      outline: 2px solid red;
+    }
+    .mensagem-erro {
+      color: red;
+    }
+  }
