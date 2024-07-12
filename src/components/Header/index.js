@@ -7,7 +7,7 @@ export default function Header({
     descricao, 
     className = '', 
     imagem, 
-    children}) {
+    children} = {}) {
     return (
         <header className={styles.header}>
             {titulo && !imagem &&

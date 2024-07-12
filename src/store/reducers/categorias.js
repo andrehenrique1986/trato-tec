@@ -1,12 +1,14 @@
 import { createStandaloneToast } from "@chakra-ui/toast";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import categoriasService from "services/categorias";
 import { resetarCarrinho } from "./carrinho";
-import { duration } from "@mui/material";
 
+const { toast } = createStandaloneToast();
 
 const initialState = [];
-const { toast } = createStandaloneToast();
+
+export const carregarCategorias = createAction('categorias/carregarCategorias');
+export const carregarUmaCategoria = createAction('categorias/carregarUmaCategoria');
 
 export const buscarCategorias = createAsyncThunk(
   'categorias/buscar',
@@ -16,45 +18,16 @@ export const buscarCategorias = createAsyncThunk(
 const categoriasSlice = createSlice({
   name: 'categorias',
   initialState,
+  reducers: {
+    adicionarTodasAsCategorias: (state, {payload}) => {
+      return payload;
+    }, 
+    adicionarUmaCategoria: (state, { payload }) => {
+      state.push(payload);
+    }
+  },
   extraReducers: builder => {
     builder
-    .addCase(
-      buscarCategorias.fulfilled,
-      (state, {payload}) => {
-        toast({
-          title: 'Sucesso !',
-          description: 'Categorias carregadas com sucesso !',
-          status: "success",
-          duration: 2000,
-          isCloseble: true
-        });
-        return payload;
-      }
-    )
-    .addCase(
-      buscarCategorias.pending,
-      (state, {payload}) => {
-        toast({
-          title: 'Carregando',
-          description: 'Carregando categorias',
-          status: "loading",
-          duration: 2000,
-          isCloseble: true
-        });
-      }
-    )
-    .addCase(
-      buscarCategorias.rejected,
-      (state, {payload}) => {
-        toast({
-          title: 'Erro',
-          description: 'Erro na busca de categoria',
-          status: "error",
-          duration: 2000,
-          isCloseble: true
-        });
-      }
-    )
     .addCase(
       resetarCarrinho.type,
       () => {
@@ -70,6 +43,6 @@ const categoriasSlice = createSlice({
   }
 });
 
-
+export const { adicionarTodasAsCategorias, adicionarUmaCategoria } = categoriasSlice.actions;
 
 export default categoriasSlice.reducer;
