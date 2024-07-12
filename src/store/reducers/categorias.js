@@ -1,56 +1,75 @@
-import { createSlice } from "@reduxjs/toolkit";
-import automotivoThumb from '../../assets/categorias/thumbnail/automotivo.png';
-import eletronicosThumb from '../../assets/categorias/thumbnail/eletronicos.png';
-import escritorioThumb from '../../assets/categorias/thumbnail/escritorio.png'; 
-import jogosThumb from '../../assets/categorias/thumbnail/jogos.png';
-import somThumb from '../../assets/categorias/thumbnail/som.png';
-import automotivoHeader from '../../assets/categorias/header/automotivo.png';
-import eletronicosHeader from '../../assets/categorias/header/eletronicos.png';
-import escritorioHeader from '../../assets/categorias/header/escritorio.png';
-import jogosHeader from '../../assets/categorias/header/jogos.png';
-import somHeader from '../../assets/categorias/header/som.png';
+import { createStandaloneToast } from "@chakra-ui/toast";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import categoriasService from "services/categorias";
+import { resetarCarrinho } from "./carrinho";
+import { duration } from "@mui/material";
 
-const initialState = [
-        {
-            nome: 'Eletrônicos',
-            thumbnail: eletronicosThumb,
-            header: eletronicosHeader,
-            id: 'eletronicos',
-            descricao: 'Os melhores e mais atuais dispositivos eletrônicos estão aqui!'
-        },
-        {
-            nome: 'Automotivo',
-            thumbnail: automotivoThumb,
-            header: automotivoHeader,
-            id: 'automotivos',
-            descricao: 'Encontre aqui equipamentos para deixar seu carro com a sua cara!'
-        },
-        {
-            nome: 'Jogos',
-            thumbnail: jogosThumb,
-            header: jogosHeader,
-            id: 'jogos',
-            descricao: 'Adquira os consoles e jogos mais atuais do mercado!'
-        },
-        {
-            nome: 'Escritório',
-            thumbnail: escritorioThumb,
-            header: escritorioHeader,
-            id: 'escritorio',
-            descricao: 'Tudo para que o seu escritório ficar incrível!'
-        },
-        {
-            nome: 'Som e Imagem',
-            thumbnail: somThumb,
-            header: somHeader,
-            id: 'som',
-            descricao: 'Curta suas músicas e filmes com a melhor qualidade!'
-        }
-    ]
-        
+
+const initialState = [];
+const { toast } = createStandaloneToast();
+
+export const buscarCategorias = createAsyncThunk(
+  'categorias/buscar',
+   categoriasService.buscar
+);
+
 const categoriasSlice = createSlice({
-    name: 'categorias',
-    initialState,
+  name: 'categorias',
+  initialState,
+  extraReducers: builder => {
+    builder
+    .addCase(
+      buscarCategorias.fulfilled,
+      (state, {payload}) => {
+        toast({
+          title: 'Sucesso !',
+          description: 'Categorias carregadas com sucesso !',
+          status: "success",
+          duration: 2000,
+          isCloseble: true
+        });
+        return payload;
+      }
+    )
+    .addCase(
+      buscarCategorias.pending,
+      (state, {payload}) => {
+        toast({
+          title: 'Carregando',
+          description: 'Carregando categorias',
+          status: "loading",
+          duration: 2000,
+          isCloseble: true
+        });
+      }
+    )
+    .addCase(
+      buscarCategorias.rejected,
+      (state, {payload}) => {
+        toast({
+          title: 'Erro',
+          description: 'Erro na busca de categoria',
+          status: "error",
+          duration: 2000,
+          isCloseble: true
+        });
+      }
+    )
+    .addCase(
+      resetarCarrinho.type,
+      () => {
+        toast({
+          title: 'Sucesso!',
+          description: 'Compra completada com sucesso!',
+          status: 'success',
+          duration: 2000,
+          isCloseble: true
+        })
+      }
+    )
+  }
 });
+
+
 
 export default categoriasSlice.reducer;
